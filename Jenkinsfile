@@ -3,12 +3,12 @@ pipeline {
         label 'node-ec'
     }
 
-    environment {
+    /*environment {
         S3_BUCKET = "your-s3-bucket-name"
         AWS_REGION = "your-aws-region"
         EKS_CLUSTER = "your-eks-cluster-name"
         ECR_REPO = "your-ecr-repository-name"
-    }
+    }*/
 
     parameters {
         choice(
@@ -33,7 +33,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 dir('terraform') {
-                    sh 'terraform init -backend-config="bucket=${env.S3_BUCKET}"'
+                    sh 'terraform init
                 }
             }
         }
