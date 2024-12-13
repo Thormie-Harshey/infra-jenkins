@@ -33,7 +33,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 dir('terraform') {
-                    sh 'terraform init
+                    sh 'terraform init'
                 }
             }
         }
