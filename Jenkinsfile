@@ -14,7 +14,8 @@ pipeline {
         choice(
             name: 'ACTION',
             choices: ['apply', 'destroy'],
-            description: 'Choose the action to perform: apply (default) or destroy.')
+            description: 'Choose the action to perform: apply (default) or destroy.'
+        )
     }
 
     stages {
@@ -44,8 +45,6 @@ pipeline {
             }
             steps {
                 script {
-                    
-                    // Terraform Apply
                     if (params.ACTION == 'apply') {
                         dir('terraform') {
                             sh 'terraform validate'
@@ -55,13 +54,16 @@ pipeline {
                         sh "aws eks update-kubeconfig --name ${env.EKS_CLUSTER} --region ${env.AWS_REGION}"
                         sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/aws/deploy.yaml'
                     
-                    // Terraform Destroy
                     } else if (params.ACTION == 'destroy') {
                         sh 'kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/aws/deploy.yaml || true'
                         script {
-                            def images = sh(script: "aws ecr list-images --repository-name ${env.ECR_REPO} --query 'imageIds[*]' --output json", returnStdout: true).trim()
+                            def images = sh(
+                                script: "aws ecr list-images --repository-name ${env.ECR_REPO} --query 'imageIds' --output json",
+                                returnStdout: true
+                            ).trim()
+
                             if (images != '[]') {
-                                sh "aws ecr batch-delete-image --repository-name ${env.ECR_REPO} --image-ids \"${images}\""
+                                sh "aws ecr batch-delete-image --repository-name ${env.ECR_REPO} --image-ids '${images}'"
                             } else {
                                 echo "No images found in ${env.ECR_REPO}."
                             }
