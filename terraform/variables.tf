@@ -5,11 +5,11 @@ variable "aws_region" {
 }
 
 variable "name" {
-  default = "githubactions-eks"
+  default = "jenkins-eks"
 }
 
 variable "ecr_repo" {
-  default = "gitops-webapp"
+  default = "jenkins-repo"
 }
 
 variable "k8s_version" {
@@ -28,6 +28,6 @@ variable "public_subnet_cidr_blocks" {
 
 variable "tags" {
   default = {
-    App = "eks-cluster"
+    App = "jenkins-eks-cluster"
   }
 }

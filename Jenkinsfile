@@ -33,7 +33,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 dir('terraform') {
-                    sh 'terraform init -backend-config="bucket=${S3_BUCKET}"'
+                    sh 'terraform init -backend-config="bucket=${env.S3_BUCKET}"'
                 }
             }
         }
@@ -52,18 +52,18 @@ pipeline {
                             sh 'terraform plan -no-color -input=false -out planfile'
                             sh 'terraform apply -auto-approve -input=false -parallelism=1 planfile'
                         }
-                        sh "aws eks update-kubeconfig --name ${EKS_CLUSTER} --region ${AWS_REGION}"
+                        sh "aws eks update-kubeconfig --name ${env.EKS_CLUSTER} --region ${env.AWS_REGION}"
                         sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/aws/deploy.yaml'
                     
                     // Terraform Destroy
                     } else if (params.ACTION == 'destroy') {
                         sh 'kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/aws/deploy.yaml || true'
                         script {
-                            def images = sh(script: "aws ecr list-images --repository-name ${ECR_REPO} --query 'imageIds[*]' --output json", returnStdout: true).trim()
+                            def images = sh(script: "aws ecr list-images --repository-name ${env.ECR_REPO} --query 'imageIds[*]' --output json", returnStdout: true).trim()
                             if (images != '[]') {
-                                sh "aws ecr batch-delete-image --repository-name ${ECR_REPO} --image-ids \"${images}\""
+                                sh "aws ecr batch-delete-image --repository-name ${env.ECR_REPO} --image-ids \"${images}\""
                             } else {
-                                echo "No images found in ${ECR_REPO}."
+                                echo "No images found in ${env.ECR_REPO}."
                             }
                         }
                         dir('terraform') {
