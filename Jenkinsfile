@@ -4,7 +4,6 @@ pipeline {
     }
 
     /*environment {
-        S3_BUCKET = "your-s3-bucket-name"
         AWS_REGION = "your-aws-region"
         EKS_CLUSTER = "your-eks-cluster-name"
         ECR_REPO = "your-ecr-repository-name"
