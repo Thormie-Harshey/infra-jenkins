@@ -1,9 +1,9 @@
 terraform {
   required_version = "~> 1.0"
   backend "s3" {
-    bucket = "infrabucket-iacgitops-eu-west-2"
-    key    = "jenkins-iac/state.tfstate"
-    region = "eu-west-2"
+    bucket = "jenkinseks-infrabucket "
+    key    = "jenkins-iac/terraform.tfstate"
+    region = "us-east-1"
   }
   required_providers {
     aws = {
