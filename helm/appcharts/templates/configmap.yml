@@ -4,7 +4,7 @@ metadata:
   name: app-config
 data:
   MYSQL_DATABASE: contactform
-  S3_BUCKET_NAME: jenkinseks-bucket
+  S3_BUCKET_NAME: jenkinseks-infrabucket
   REGION: us-east-1
   db-url: mysql-service
 
