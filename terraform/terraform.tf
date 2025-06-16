@@ -1,8 +1,8 @@
 terraform {
   required_version = "~> 1.0"
   backend "s3" {
-    bucket = "jenkinseks-infrabucket "
-    key    = "terraform.tfstate"
+    bucket = "jenkinseks-infrabucket"
+    key    = "jenkins-iac/terraform.tfstate"
     region = "us-east-1"
   }
   required_providers {
