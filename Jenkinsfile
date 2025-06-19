@@ -5,7 +5,7 @@ pipeline {
 
     /*environment {
         AWS_REGION = "your-aws-region"
-        EKS_CLUSTER = "your-EKS-cluster-name"
+        EKS_CLUSTER = "your-eks-cluster-name"
         ECR_REPO = "your-ecr-repository-name"
     }*/
 
